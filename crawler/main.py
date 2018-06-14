@@ -9,7 +9,7 @@ from robobrowser import RoboBrowser
 
 from pipeline import output
 
-start_url = '/root/workspace/python/robobrowser_learning/crawler/'
+start_url = 'https://cl.ghuws.men/thread0806.php?fid=20'
 
 def run():
     """

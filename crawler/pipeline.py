@@ -1,7 +1,7 @@
 import sqlite3
 import robobrowser
 
-BASE_DIR = "D:\\Code\\python\\robobrowser_learning\\crawler\\"
+BASE_DIR = "/root/workspace/python/robobrowser_learning/data/"
 
 def output(title, novel_id=0, author="unkown", novel_type="unkown", content="unkown", date="unkown"):
     to_sql(title, novel_id, author, novel_type, content, date)
