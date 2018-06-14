@@ -3,12 +3,13 @@
 import datetime
 import sqlite3
 import time
+import random
 
 from robobrowser import RoboBrowser
 
 from pipeline import output
 
-start_url = 'https://cl.ghuws.men/thread0806.php?fid=20'
+start_url = '/root/workspace/python/robobrowser_learning/crawler/'
 
 def run():
     """
@@ -32,7 +33,7 @@ def run():
             print(title)
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
             # output(novel_id, title, author, date, novel_type, content)
-        time.sleep(5)
+        time.sleep(random.randint(10, 30))
         browser.follow_link(next_page(browser))
         print('novel link', browser.url)
 
@@ -129,7 +130,7 @@ def get_content(browser, novel, author):
     """
     novel_link = novel.find('td', class_='tal').a
     link = 'https://cl.ghuws.men/' + novel_link['href']
-    time.sleep(5)
+    time.sleep(random.randint(10, 30))
     # browser.follow_link(novel_link)
     browser.open(link)
     contents = list()
@@ -138,7 +139,7 @@ def get_content(browser, novel, author):
         contents.append(get_cell_content(browser, author))
         if is_end_page(browser):
             break
-        time.sleep(5)
+        time.sleep(random.randint(10, 30))
         browser.follow_link(next_page(browser))
         print('novel more page link', browser.url)
     return "\n".join(contents)
