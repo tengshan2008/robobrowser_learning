@@ -29,11 +29,10 @@ def run():
             author = get_author(novel)
             date = get_date(novel)
             novel_type = get_type(novel)
-            content = get_content(browser, novel, author)
-            print('*'*50)
+            print('*'*80)
             print(title)
+            content = get_content(browser, novel, author)
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
-            # output(novel_id, title, author, date, novel_type, content)
         time.sleep(random.randint(10, 30))
         browser.follow_link(next_page(browser))
         print('novel link', browser.url)
@@ -47,14 +46,7 @@ def get_all_novel_links(browser):
     pattern = '草榴官方客戶端|來訪者必看的內容|发帖前必读|关于论坛的搜索功能|文学区违规举报专贴'
     for tr in browser.select('tr.tr3.t_one.tac'):
         if re.search(pattern, tr.h3.a.string) is None:
-            novels.append(tr)
-        # if tr.h3.a.string in ['草榴官方客戶端 & 大陸入口 & 永久域名 ** 必須加入收藏夾 9.13更新',
-        #                           '■■■ 來訪者必看的內容 - 使你更快速上手  ■■■',
-        #                           '发帖前必读',
-        #                           '关于论坛的搜索功能',
-        #                           '文学区违规举报专贴-----置頂版規有新更新（藍色）']:
-        #     continue
-            
+            novels.append(tr)            
     return novels
 
 
