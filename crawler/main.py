@@ -10,6 +10,12 @@ from robobrowser import RoboBrowser
 
 from pipeline import output
 
+# const
+NEXT_PAGE = '下一頁'
+TODAY = '今天'
+YESTERDAY = '昨天'
+PATTERN = '草榴官方客戶端|來訪者必看的內容|发帖前必读|关于论坛的搜索功能|文学区违规举报专贴'
+
 host = 'https://cl.ghuws.men/'
 start_url = host + 'thread0806.php?fid=20'
 
@@ -30,7 +36,7 @@ def run():
             author = get_author(novel)
             date = get_date(novel)
             novel_type = get_type(novel)
-            print('*'*80)
+            print('*'*85)
             print(title)
             content = get_content(browser, novel, author)
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
@@ -43,9 +49,8 @@ def get_all_novel_links(browser):
     return links list [link1, link2, link3]
     """
     novels = list()
-    pattern = '草榴官方客戶端|來訪者必看的內容|发帖前必读|关于论坛的搜索功能|文学区违规举报专贴'
     for tr in browser.select('tr.tr3.t_one.tac'):
-        if re.search(pattern, tr.h3.a.string) is None:
+        if re.search(PATTERN, tr.h3.a.string) is None:
             novels.append(tr)            
     return novels
 
@@ -57,7 +62,7 @@ def next_page(browser):
     """
     pages = browser.find(class_='pages')
     for page in pages:
-        if page.string == '下一頁':
+        if page.string == NEXT_PAGE:
             return page
     return None
 
@@ -71,7 +76,7 @@ def is_end_page(browser):
     if browser.find(class_='pages') is None:
         return True
     for label_a in browser.find_all('a'):
-        if label_a.string == '下一頁':
+        if label_a.string == NEXT_PAGE:
             if label_a.get('href') == 'javascript:#':
                 return True
     return False
@@ -103,10 +108,10 @@ def get_date(novel):
     return novel's date
     """
     date = novel.find('div', class_='f12').string
-    if '今天' in date:
+    if TODAY in date:
         today = datetime.date.today()
         return str(today)
-    if '昨天' in date:
+    if YESTERDAY in date:
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
         return str(yesterday)
     return date
