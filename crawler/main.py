@@ -36,7 +36,6 @@ def run():
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
         time.sleep(random.randint(10, 30))
         browser.follow_link(next_page(browser))
-        print('novel link', browser.url)
 
 def get_all_novel_links(browser):
     """
@@ -129,6 +128,7 @@ def get_content(browser, novel, author):
     time.sleep(random.randint(10, 30))
     # browser.follow_link(novel_link)
     browser.open(link)
+    print('novel link', browser.url)
     contents = list()
     # look all page in a novel
     while True:
