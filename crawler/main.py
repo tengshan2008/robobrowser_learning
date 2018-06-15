@@ -18,7 +18,7 @@ PATTERN = '草榴官方客戶端|來訪者必看的內容|发帖前必读|关于
 R_START = 10
 R_END = 30
 
-host = 'https://cl.ghuws.men/'
+host = 'https://cl.cbcb.us/'
 start_url = host + 'thread0806.php?fid=20'
 
 def run():
