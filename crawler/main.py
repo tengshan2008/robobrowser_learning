@@ -15,6 +15,8 @@ NEXT_PAGE = '下一頁'
 TODAY = '今天'
 YESTERDAY = '昨天'
 PATTERN = '草榴官方客戶端|來訪者必看的內容|发帖前必读|关于论坛的搜索功能|文学区违规举报专贴'
+R_START = 10
+R_END = 30
 
 host = 'https://cl.ghuws.men/'
 start_url = host + 'thread0806.php?fid=20'
@@ -36,11 +38,11 @@ def run():
             author = get_author(novel)
             date = get_date(novel)
             novel_type = get_type(novel)
-            print('*'*85)
+            print('*'*75)
             print(title)
             content = get_content(browser, novel, author)
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
-        time.sleep(random.randint(10, 30))
+        time.sleep(random.randint(R_START, R_END))
         browser.follow_link(next_page(browser))
 
 def get_all_novel_links(browser):
@@ -130,7 +132,7 @@ def get_content(browser, novel, author):
     """
     novel_link = novel.find('td', class_='tal').a
     link = host + novel_link['href']
-    time.sleep(random.randint(10, 30))
+    time.sleep(random.randint(R_START, R_END))
     # browser.follow_link(novel_link)
     browser.open(link)
     print('novel link', browser.url)
@@ -140,9 +142,9 @@ def get_content(browser, novel, author):
         contents.append(get_cell_content(browser, author))
         if is_end_page(browser):
             break
-        time.sleep(random.randint(10, 30))
+        time.sleep(random.randint(R_START, R_END))
         browser.follow_link(next_page(browser))
-        print('novel more page link', browser.url)
+        print('page link', browser.url)
     return "\n".join(contents)
 
 
