@@ -15,8 +15,8 @@ NEXT_PAGE = '下一頁'
 TODAY = '今天'
 YESTERDAY = '昨天'
 PATTERN = '草榴官方客戶端|來訪者必看的內容|发帖前必读|关于论坛的搜索功能|文学区违规举报专贴'
-R_START = 10
-R_END = 30
+R_START = 30
+R_END = 180
 
 host = 'https://cl.cbcb.us/'
 start_url = host + 'thread0806.php?fid=20'
