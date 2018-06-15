@@ -46,16 +46,15 @@ def get_all_novel_links(browser):
     novels = list()
     pattern = '草榴官方客戶端|來訪者必看的內容|发帖前必读|关于论坛的搜索功能|文学区违规举报专贴'
     for tr in browser.select('tr.tr3.t_one.tac'):
-        if re.search(pattern, tr.h3.a.string) is not None:
-            continue
+        if re.search(pattern, tr.h3.a.string) is None:
+            novels.append(tr)
         # if tr.h3.a.string in ['草榴官方客戶端 & 大陸入口 & 永久域名 ** 必須加入收藏夾 9.13更新',
         #                           '■■■ 來訪者必看的內容 - 使你更快速上手  ■■■',
         #                           '发帖前必读',
         #                           '关于论坛的搜索功能',
         #                           '文学区违规举报专贴-----置頂版規有新更新（藍色）']:
         #     continue
-        else:
-            novels.append(tr)
+            
     return novels
 
 
