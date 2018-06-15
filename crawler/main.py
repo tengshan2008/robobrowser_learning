@@ -10,7 +10,8 @@ from robobrowser import RoboBrowser
 
 from pipeline import output
 
-start_url = 'https://cl.ghuws.men/thread0806.php?fid=20'
+host = 'https://cl.ghuws.men/'
+start_url = host + 'thread0806.php?fid=20'
 
 def run():
     """
@@ -124,7 +125,7 @@ def get_content(browser, novel, author):
     return content string
     """
     novel_link = novel.find('td', class_='tal').a
-    link = 'https://cl.ghuws.men/' + novel_link['href']
+    link = host + novel_link['href']
     time.sleep(random.randint(10, 30))
     # browser.follow_link(novel_link)
     browser.open(link)
