@@ -1,7 +1,10 @@
+import os
 import sqlite3
+
 import robobrowser
 
-BASE_DIR = "/root/workspace/python/robobrowser_learning/data/"
+FATHER_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+BASE_DIR = os.path.normpath("%s/%s" % (FATHER_DIR, "data"))
 
 def output(title, novel_id=0, author="unkown", novel_type="unkown", content="unkown", date="unkown"):
     to_sql(title, novel_id, author, novel_type, content, date)
@@ -65,7 +68,8 @@ def to_api(title, novel_id, author, novel_type, content, date):
     upload_action = robobrowser.forms.fields.Input(upload_action_str)
     upload_form.add_field(upload_action)
     # add upload file field
-    path = BASE_DIR + title + ".txt"
+    # path = BASE_DIR + title + ".txt"
+    path = os.path.join(BASE_DIR, title + ".txt")
     with open(path, 'w', encoding='utf-8') as f:
         f.writelines([
             "标题：" + title + "\n",
@@ -86,3 +90,5 @@ if __name__ == "__main__":
     content = "一个晴朗的早晨，主人公死了。"
     date = "2018-01-02 15:16:22"
     output(title, author=author, novel_id=novel_id, content=content, date=date)
+    print(BASE_DIR)
+    print(os.path.join(BASE_DIR, title + ".txt"))
