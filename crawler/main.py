@@ -34,7 +34,6 @@ def run():
         novels = get_all_novel_links(browser)
         # process each novel
         for novel in novels:
-            novel_browser = browser
             novel_id = get_id(novel)
             title = get_title(novel)
             author = get_author(novel)
@@ -42,7 +41,7 @@ def run():
             novel_type = get_type(novel)
             print('*'*75)
             print(title)
-            content = get_content(novel_browser, novel, author)
+            content = get_content(novel, author)
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
         time.sleep(random.randint(R_START, R_END))
         next_page_link = next_page(browser)
@@ -128,11 +127,12 @@ def get_type(novel):
     novel_type = novel.find(class_='tal').contents[0].strip()
     return novel_type
 
-def get_content(browser, novel, author):
+def get_content(novel, author):
     """
     get novel all content
     return content string
     """
+    browser = RoboBrowser(history=True)
     novel_link = novel.find('td', class_='tal').a
     link = host + novel_link['href']
     time.sleep(random.randint(R_START, R_END))
