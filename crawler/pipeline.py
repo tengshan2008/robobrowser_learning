@@ -8,7 +8,10 @@ BASE_DIR = os.path.normpath("%s/%s" % (FATHER_DIR, "data"))
 
 def output(title, novel_id=0, author="unkown", novel_type="unkown", content="unkown", date="unkown"):
     to_sql(title, novel_id, author, novel_type, content, date)
-    # to_api(title, novel_id, author, novel_type, content, date)
+    try:
+        to_api(title, novel_id, author, novel_type, content, date)
+    except:
+        print("novel title", title, "id", novel_id, " not upload")
 
 def to_sql(title, novel_id, author, novel_type, content, date):
     title = title.replace("'", "''")
