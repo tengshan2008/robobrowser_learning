@@ -55,7 +55,7 @@ def to_sql(title, novel_id, author, novel_type, content, date):
     conn.close()
 
 def to_api(title, novel_id, author, novel_type, content, date):
-    browser = robobrowser.RoboBrowser(history=True, timeout=60)
+    browser = robobrowser.RoboBrowser(history=True)
     url = 'http://apanr.net/'
     # open anyview a panel
     browser.open(url)
