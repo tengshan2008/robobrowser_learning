@@ -5,6 +5,7 @@ import random
 import re
 import sqlite3
 import time
+import requests
 
 from robobrowser import RoboBrowser
 
@@ -147,8 +148,13 @@ def get_content(novel, author):
             break
         time.sleep(random.randint(R_START, R_END))
         next_page_link = next_page(browser)
-        browser.follow_link(next_page_link)
-        print('page link', browser.url)
+        try:
+            browser.follow_link(next_page_link)
+        except requests.exceptions.ConnectionError:
+            print('link failed', browser.url)
+            continue
+        else:
+            print('page link', browser.url)
     return "\n".join(contents)
 
 
