@@ -138,12 +138,18 @@ def get_content(novel, author):
     link = host + novel_link['href']
     time.sleep(random.randint(R_START, R_END))
     # browser.follow_link(novel_link)
-    browser.open(link)
-    print('novel link', browser.url)
+    try:
+        browser.open(link)
+    except requests.exceptions.ConnectionError:
+        print('link failed', browser.url)
+        return ''
+    else:
+        print('novel link', browser.url)
     contents = list()
     # look all page in a novel
     while True:
-        contents.append(get_cell_content(browser, author))
+        content = get_cell_content(browser, author)
+        contents.append(content)
         if is_end_page(browser):
             break
         time.sleep(random.randint(R_START, R_END))
