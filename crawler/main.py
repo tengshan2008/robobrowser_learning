@@ -141,7 +141,7 @@ def get_content(novel, author):
     try:
         browser.open(link)
     except requests.exceptions.ConnectionError:
-        print('link failed', browser.url)
+        print('link failed', link)
         return ''
     else:
         print('novel link', browser.url)
