@@ -47,6 +47,9 @@ def to_sql(title, novel_id, author, novel_type, content, date):
     '''
     param = (novel_id,)
     cursor.execute(query, param)
+    print('len of cursor fetchall', len(cursor.fetchall()))
+    print('len of db content', len(cursor.fetchone()[0]))
+    print('len of new content', len(content))
     if len(cursor.fetchall()) != 0:
         if cursor.fetchone() is None:
             query = '''
