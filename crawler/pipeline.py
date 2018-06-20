@@ -48,10 +48,7 @@ def to_sql(title, novel_id, author, novel_type, content, date):
     param = (novel_id,)
     cursor.execute(query, param)
     if len(cursor.fetchall()) != 0:
-        print('fetch one', cursor.fetchone())
-        if len(cursor.fetchone()[0]) > len(content):
-            return False
-        else:
+        if cursor.fetchone() is None or len(cursor.fetchone()[0]) <= len(content):
             query = '''
                 update novel
                 set content = ?
@@ -59,6 +56,8 @@ def to_sql(title, novel_id, author, novel_type, content, date):
             '''
             param = (content, novel_id)
             cursor.execute(query, param)
+        else:
+            return False
 
     query = '''
         insert into novel
