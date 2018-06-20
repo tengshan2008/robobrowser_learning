@@ -71,6 +71,9 @@ def to_sql(title, novel_id, author, novel_type, content, date):
             print('have new novel content, update it')
         else:
             print('the novel', title, 'has load in database')
+            cursor.close()
+            conn.commit()
+            conn.close()
             return False
 
     query = '''
