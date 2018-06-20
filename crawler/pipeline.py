@@ -47,7 +47,9 @@ def to_sql(title, novel_id, author, novel_type, content, date):
     '''
     param = (novel_id,)
     effect_row = cursor.execute(query, param)
+    print(effect_row)
     if effect_row != 0:
+        print(cursor.fetchone()[0])
         if len(cursor.fetchone()[0]) > len(content):
             return False
         else:
