@@ -7,14 +7,15 @@ FATHER_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 BASE_DIR = os.path.normpath("%s/%s" % (FATHER_DIR, "data"))
 
 def output(title, novel_id=0, author="unkown", novel_type="unkown", content="unkown", date="unkown"):
-    to_sql(title, novel_id, author, novel_type, content, date)
-    try:
-        to_api(title, novel_id, author, novel_type, content, date)
-    except Exception as e:
-        print(e)
-        print("novel title", title, "id", novel_id, " not upload")
-    else:
-        print("novel", title, "has upload")
+    match = to_sql(title, novel_id, author, novel_type, content, date)
+    if match:
+        try:
+            to_api(title, novel_id, author, novel_type, content, date)
+        except Exception as e:
+            print(e)
+            print("novel title", title, "id", novel_id, " not upload")
+        else:
+            print("novel", title, "has upload")
 
 def to_sql(title, novel_id, author, novel_type, content, date):
     title = title.replace("'", "''")
@@ -42,6 +43,23 @@ def to_sql(title, novel_id, author, novel_type, content, date):
     )
 
     query = '''
+        select content from novel where novel_id = ?
+    '''
+    param = (novel_id,)
+    effect_row = cursor.execute(query, param)
+    if effect_row != 0:
+        if len(cursor.fetchone()[0]) > len(content):
+            return False
+        else:
+            query = '''
+                update novel
+                set content = ?
+                where novel_id = ?
+            '''
+            param = (content, novel_id)
+            cursor.execute(query, param)
+
+    query = '''
         insert into novel
         (novel_id, title, author, type, content, date)
         values
@@ -53,6 +71,7 @@ def to_sql(title, novel_id, author, novel_type, content, date):
     cursor.close()
     conn.commit()
     conn.close()
+    return True
 
 def to_api(title, novel_id, author, novel_type, content, date):
     browser = robobrowser.RoboBrowser(history=True)
@@ -90,7 +109,7 @@ def to_api(title, novel_id, author, novel_type, content, date):
 
 
 if __name__ == "__main__":
-    novel_id = 5543333334556
+    novel_id = 3183073
     title = "测试3"
     author = "傻瓜"
     content = "一个晴朗的早晨，主人公死了。"
