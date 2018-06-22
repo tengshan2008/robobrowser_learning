@@ -20,7 +20,7 @@ R_START = 5
 R_END = 10
 
 host = 'https://cl.cbcb.us/'
-start_url = host + 'thread0806.php?fid=20'
+start_url = host + 'thread0806.php?fid=20&search=&page=5'
 
 def run():
     """
