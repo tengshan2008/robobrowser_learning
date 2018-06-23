@@ -31,7 +31,6 @@ def run():
     browser.open(start_url)
     # look all page in novels
     while not is_end_page(browser):
-        print("novels page link", browser.url)
         novels = get_all_novel_links(browser)
         # process each novel
         for novel in novels:
@@ -46,7 +45,7 @@ def run():
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
         time.sleep(random.randint(R_START, R_END))
         next_page_link = next_page(browser)
-        print(next_page_link)
+        print("novels page link", next_page_link)
         browser.follow_link(next_page_link)
 
 def get_all_novel_links(browser):
