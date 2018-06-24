@@ -28,7 +28,13 @@ def run(start_url):
     """
     # first open novel url with normal browser
     browser = RoboBrowser(history=True)
-    browser.open(start_url)
+    try:
+        browser.open(start_url)
+    except requests.exceptions.ReadTimeout:
+        print(start_url, "failed")
+        print('try again in 60s later')
+        time.sleep(60)
+        run(start_url)
     # look all page in novels
     while not is_end_page(browser):
         novels = get_all_novel_links(browser)
@@ -45,6 +51,8 @@ def run(start_url):
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
         time.sleep(random.randint(R_START, R_END))
         next_page_link = next_page(browser)
+        if next_page_link is None:
+            run(browser.url)
         try:
             browser.follow_link(next_page_link)
         except requests.exceptions.ReadTimeout:
@@ -162,6 +170,8 @@ def get_content(novel, author):
             break
         time.sleep(random.randint(R_START, R_END))
         next_page_link = next_page(browser)
+        if next_page_link is None:
+            continue
         try:
             browser.follow_link(next_page_link)
         except requests.exceptions.ConnectionError:
