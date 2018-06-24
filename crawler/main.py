@@ -22,7 +22,7 @@ R_END = 10
 host = 'https://cl.cbcb.us/'
 start_url = host + 'thread0806.php?fid=20&search=&page=7'
 
-def run():
+def run(start_url):
     """
     start crawler
     """
@@ -45,8 +45,16 @@ def run():
             output(title, novel_id=novel_id, author=author, novel_type=novel_type, content=content, date=date)
         time.sleep(random.randint(R_START, R_END))
         next_page_link = next_page(browser)
-        print("novels page link", next_page_link)
-        browser.follow_link(next_page_link)
+        try:
+            browser.follow_link(next_page_link)
+        except requests.exceptions.ReadTimeout:
+            print(next_page_link, "failed")
+            print('try again in 60s later')
+            time.sleep(60)
+            link = host + next_page_link['href']
+            run(link)
+        else:
+            print("novels page link", next_page_link)
 
 def get_all_novel_links(browser):
     """
@@ -179,4 +187,4 @@ def get_cell_content(browser, author):
     return "\n".join(content)
 
 if __name__ == "__main__":
-    run()
+    run(start_url)
