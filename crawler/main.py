@@ -22,19 +22,19 @@ R_END = 10
 host = 'https://cl.cbcb.us/'
 start_url = host + 'thread0806.php?fid=20&search=&page=11'
 
-def run(start_url):
+def run(url):
     """
     start crawler
     """
     # first open novel url with normal browser
     browser = RoboBrowser(history=True)
     try:
-        browser.open(start_url)
+        browser.open(url)
     except requests.exceptions.ReadTimeout:
-        print(start_url, "failed")
+        print(url, "failed")
         print('try again in 60s later')
         time.sleep(60)
-        run(start_url)
+        run(url)
     # look all page in novels
     while not is_end_page(browser):
         novels = get_all_novel_links(browser)
