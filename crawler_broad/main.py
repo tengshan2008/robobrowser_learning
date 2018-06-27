@@ -7,7 +7,7 @@ import records
 import requests
 from robobrowser import RoboBrowser
 
-from pipeline import to_sql
+from pipeline import to_api, to_sql, update_content
 
 NEXT_PAGE = '下一頁'
 TODAY = '今天'
@@ -109,21 +109,19 @@ def get_link(novel):
     link = host + novel_link['href']
     return link
 
-def get_content(novel, author):
+def get_content(link, author):
     """
     get novel all content
     return content string
     """
     browser = RoboBrowser(history=True)
-    novel_link = novel.find('td', class_='tal').a
-    link = host + novel_link['href']
     time.sleep(random.randint(R_START, R_END))
-    # browser.follow_link(novel_link)
     try:
         browser.open(link)
-    except requests.exceptions.ConnectionError:
-        print('link failed', link)
-        return ''
+    except:
+        time,sleep(60)
+        print('link failed', link, 'try again')
+        return get_content(link, author)
     else:
         print('novel link', browser.url)
     contents = list()
@@ -134,12 +132,9 @@ def get_content(novel, author):
         if is_end_page(browser):
             break
         time.sleep(random.randint(R_START, R_END))
-        next_page_link = next_page(browser)
-        if next_page_link is None:
-            continue
         try:
-            browser.follow_link(next_page_link)
-        except requests.exceptions.ConnectionError:
+            browser.follow_link(next_page(browser))
+        except:
             print('link failed', browser.url)
             continue
         else:
@@ -168,20 +163,44 @@ def run(url):
     for novel in novels:
         i = i + 1
         print('have finished ', i)
-        novel_id = get_id(novel)
-        title = get_title(novel)
-        author = get_author(novel)
-        date = get_date(novel)
-        novel_type = get_type(novel)
-        novel_link = get_link(novel)
-        # content = get_content(novel, author)
-        to_sql(title, novel_id=novel_id, author=author, novel_type=novel_type, novel_link=novel_link, content='', date=date)
+        to_sql(
+            title = get_title(novel),
+            novel_id = get_id(novel),
+            author = get_author(novel),
+            novel_type = get_type(novel),
+            novel_link = get_link(novel),
+            content = '',
+            date = get_date(novel)
+        )
 
-def read():
+def write_to_content():
     db = records.Database('sqlite:///novel.db')
     rows = db.query('select * from novel')
-    print(rows[0])
+    for row in rows:
+        if len(row['link']) != 0 and len(row['author']) != 0:
+            content = get_content(row['link'], row['author'])
+            if len(content) > len(row['content']):
+                pipeline.update_content(row['id'], content)
+    db.close()
+
+def write_to_api():
+    db = records.Database('sqlite:///novel.db')
+    rows = db.query('select * from novel')
+    for row in rows:
+        if len(row['content']) > 0:
+            time.sleep(5)
+            to_api(
+                title=row['title'],
+                novel_id=row['novel_id'],
+                author=row['author'],
+                novel_type=row['type'],
+                novel_link=row['link'],
+                content=row['content'],
+                date=row['date']
+            )
+
 
 if __name__ == "__main__":
     # run(start_url)
-    read()
+    write_to_content()
+    # write_to_api()

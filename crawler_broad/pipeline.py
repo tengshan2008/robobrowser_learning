@@ -78,6 +78,15 @@ def to_sql(title, novel_id, author, novel_type, novel_link, content, date):
     conn.commit()
     conn.close()
 
+def update_content(idx, content):
+    conn = sqlite3.connect('novel.db')
+    cursor = conn.cursor()
+    query = 'update novel set content = ? where id = ?'
+    param = (content, idx)
+    cursor.execute(query, param)
+    conn.commit()
+    conn.close()
+
 def to_api(title, novel_id=0, author="unkown", novel_type="unkown", novel_link="unkown", content="unkown", date="unkown"):
     browser = robobrowser.RoboBrowser(history=True)
     url = 'http://apanr.net/'
