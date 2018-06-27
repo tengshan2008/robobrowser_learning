@@ -116,14 +116,17 @@ def get_content(link, author):
     """
     browser = RoboBrowser(history=True)
     time.sleep(random.randint(R_START, R_END))
-    try:
-        browser.open(link)
-    except:
-        time,sleep(60)
-        print('link failed', link, 'try again')
-        return get_content(link, author)
-    else:
-        print('novel link', browser.url)
+    for i in range(5):
+        try:
+            browser.open(link)
+        except:
+            if i != 5:
+                print('link failed', link, 'try again')
+            else:
+                print('link failed', link, 'no more try')
+        else:
+            print('novel link', browser.url)
+            break
     contents = list()
     # look all page in a novel
     while True:
@@ -132,8 +135,9 @@ def get_content(link, author):
         if is_end_page(browser):
             break
         time.sleep(random.randint(R_START, R_END))
+        next_page_link = next_page(browser)
         try:
-            browser.follow_link(next_page(browser))
+            browser.follow_link(next_page_link)
         except:
             print('link failed', browser.url)
             continue
