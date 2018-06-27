@@ -79,7 +79,7 @@ def to_sql(title, novel_id, author, novel_type, novel_link, content, date):
     conn.close()
 
 def update_content(idx, content):
-    conn = sqlite3.connect('novel.db')
+    conn = sqlite3.connect('novel.db', timeout=10)
     cursor = conn.cursor()
     query = 'update novel set content = ? where id = ?'
     param = (content, idx)
