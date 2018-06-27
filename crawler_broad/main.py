@@ -131,6 +131,7 @@ def get_content(link, author):
     # look all page in a novel
     while True:
         content = get_cell_content(browser, author)
+        print('page link', browser.url)
         contents.append(content)
         if is_end_page(browser):
             break
@@ -184,7 +185,7 @@ def write_to_content():
         if len(row['link']) != 0 and len(row['author']) != 0:
             content = get_content(row['link'], row['author'])
             if len(content) > len(row['content']):
-                pipeline.update_content(row['id'], content)
+                update_content(row['id'], content)
     db.close()
 
 def write_to_api():
