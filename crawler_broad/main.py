@@ -178,7 +178,7 @@ def run(url):
         )
 
 def write_to_content():
-    db = records.Database('sqlite:///novel.db')
+    db = records.Database('sqlite:///novel_read.db')
     rows = db.query('select * from novel')
     for row in rows:
         print(row['title'])
