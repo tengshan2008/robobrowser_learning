@@ -152,7 +152,10 @@ def get_cell_content(browser, author):
     return [cell, cell, cell]
     """
     content = list()
-    cells = browser.find_all(class_='t t2')
+    try:
+        cells = browser.find_all(class_='t t2')
+    except:
+        return "[block]\n"
     for cell in cells:
         if cell.find(class_='r_two').b.string != author:
             continue
