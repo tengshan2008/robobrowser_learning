@@ -194,7 +194,8 @@ def write_to_content():
 def write_to_api():
     db = records.Database('sqlite:///novel.db')
     rows = db.query('select * from novel')
-    for row in rows:
+    for i, row in enumerate(rows):
+        print(i)
         if len(row['content']) > 0:
             time.sleep(5)
             to_api(
