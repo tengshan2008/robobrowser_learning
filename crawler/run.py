@@ -20,7 +20,7 @@ R_START = 5
 R_END = 10
 
 host = 'https://cl.cbcb.us/'
-start_url = host + 'thread0806.php?fid=20&search=&page=11'
+start_url = host + 'thread0806.php?fid=20&search=&page=12'
 
 def run(url):
     """
@@ -183,3 +183,6 @@ def get_cell_content(browser, author):
 
 if __name__ == "__main__":
     run(start_url)
+'''
+22856
+'''
