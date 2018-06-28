@@ -183,7 +183,8 @@ def run(url):
 def write_to_content():
     db = records.Database('sqlite:///novel_read.db')
     rows = db.query('select * from novel')
-    for row in rows:
+    for i, row in enumerate(rows):
+        print(i)
         print(row['title'])
         if len(row['link']) != 0 and len(row['author']) != 0:
             content = get_content(row['link'], row['author'])
