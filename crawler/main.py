@@ -27,14 +27,8 @@ def run(url):
     start crawler
     """
     # first open novel url with normal browser
-    browser = RoboBrowser(history=True)
-    try:
-        browser.open(url)
-    except requests.exceptions.ReadTimeout:
-        print(url, "failed")
-        print('try again in 60s later')
-        time.sleep(60)
-        run(url)
+    browser = RoboBrowser(history=True, timeout=30, tries=5)
+    browser.open(url)
     # look all page in novels
     while not is_end_page(browser):
         novels = get_all_novel_links(browser)
@@ -52,17 +46,8 @@ def run(url):
         time.sleep(random.randint(R_START, R_END))
         next_page_link = next_page(browser)
         if next_page_link is None:
-            run(browser.url)
-        try:
-            browser.follow_link(next_page_link)
-        except requests.exceptions.ReadTimeout:
-            print(next_page_link, "failed")
-            print('try again in 60s later')
-            time.sleep(60)
-            link = host + next_page_link['href']
-            run(link)
-        else:
-            print("novels page link", next_page_link)
+            break
+        browser.follow_link(next_page_link)
 
 def get_all_novel_links(browser):
     """
@@ -149,7 +134,7 @@ def get_content(novel, author):
     get novel all content
     return content string
     """
-    browser = RoboBrowser(history=True)
+    browser = RoboBrowser(history=True, timeout=30, tries=5)
     novel_link = novel.find('td', class_='tal').a
     link = host + novel_link['href']
     time.sleep(random.randint(R_START, R_END))
