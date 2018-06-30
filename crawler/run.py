@@ -154,7 +154,7 @@ def get_content(novel, author):
             break
         try:
             browser.follow_link(next_page_link)
-        except requests.exceptions.ConnectionError:
+        except:
             print('link failed', browser.url)
             continue
         else:
