@@ -114,19 +114,10 @@ def get_content(link, author):
     get novel all content
     return content string
     """
-    browser = RoboBrowser(history=True)
+    browser = RoboBrowser(history=True, tries=5)
     time.sleep(random.randint(R_START, R_END))
-    for i in range(5):
-        try:
-            browser.open(link)
-        except:
-            if i != 5:
-                print('link failed', link, 'try again')
-            else:
-                print('link failed', link, 'no more try')
-        else:
-            print('novel link', browser.url)
-            break
+    browser.open(link)
+    print('novel link', browser.url)
     contents = list()
     # look all page in a novel
     while True:
@@ -183,13 +174,15 @@ def run(url):
 def write_to_content():
     db = records.Database('sqlite:///novel_read.db')
     rows = db.query('select * from novel')
-    for i, row in enumerate(rows):
+    i = 1006
+    for row in rows[1006:]:
         print(i)
         print(row['title'])
         if len(row['link']) != 0 and len(row['author']) != 0:
             content = get_content(row['link'], row['author'])
             if len(content) > len(row['content']):
                 update_content(row['id'], content)
+        i = i + 1
     
 
 def write_to_api():
