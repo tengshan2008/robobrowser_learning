@@ -134,18 +134,13 @@ def get_content(novel, author):
     get novel all content
     return content string
     """
-    browser = RoboBrowser(history=True, timeout=30, tries=5)
+    browser = RoboBrowser(parser="hteml.parser", history=True, timeout=30, tries=5)
     novel_link = novel.find('td', class_='tal').a
     link = host + novel_link['href']
     time.sleep(random.randint(R_START, R_END))
     # browser.follow_link(novel_link)
-    try:
-        browser.open(link)
-    except requests.exceptions.ConnectionError:
-        print('link failed', link)
-        return ''
-    else:
-        print('novel link', browser.url)
+    browser.open(link)
+    print('novel link', browser.url)
     contents = list()
     # look all page in a novel
     while True:
@@ -156,7 +151,7 @@ def get_content(novel, author):
         time.sleep(random.randint(R_START, R_END))
         next_page_link = next_page(browser)
         if next_page_link is None:
-            continue
+            break
         try:
             browser.follow_link(next_page_link)
         except requests.exceptions.ConnectionError:
