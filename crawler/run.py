@@ -20,14 +20,14 @@ R_START = 5
 R_END = 10
 
 host = 'https://cl.cbcb.us/'
-start_url = host + 'thread0806.php?fid=20&search=&page=12'
+start_url = host + 'thread0806.php?fid=20&search=&page=11'
 
 def run(url):
     """
     start crawler
     """
     # first open novel url with normal browser
-    browser = RoboBrowser(history=True, timeout=30, tries=5)
+    browser = RoboBrowser(parser='html.parser', history=True, timeout=30, tries=5)
     browser.open(url)
     # look all page in novels
     while not is_end_page(browser):
@@ -134,7 +134,7 @@ def get_content(novel, author):
     get novel all content
     return content string
     """
-    browser = RoboBrowser(parser="hteml.parser", history=True, timeout=30, tries=5)
+    browser = RoboBrowser(parser="html.parser", history=True, timeout=30, tries=5)
     novel_link = novel.find('td', class_='tal').a
     link = host + novel_link['href']
     time.sleep(random.randint(R_START, R_END))
