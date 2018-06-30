@@ -114,7 +114,7 @@ def get_content(link, author):
     get novel all content
     return content string
     """
-    browser = RoboBrowser(history=True, tries=5)
+    browser = RoboBrowser(parser="html.parser", history=True, timeout=30, tries=5)
     time.sleep(random.randint(R_START, R_END))
     browser.open(link)
     print('novel link', browser.url)
@@ -123,6 +123,7 @@ def get_content(link, author):
     while True:
         content = get_cell_content(browser, author)
         contents.append(content)
+        print('html content is', browser.find(True))
         if is_end_page(browser):
             break
         time.sleep(random.randint(R_START, R_END))
