@@ -131,7 +131,7 @@ def get_content(link, author):
             browser.follow_link(next_page_link)
         except:
             print('link failed', browser.url)
-            continue
+            break
         else:
             print('page link', browser.url)
     return "\n".join(contents)
