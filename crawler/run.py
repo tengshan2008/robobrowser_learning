@@ -47,7 +47,7 @@ def run(url):
         next_page_link = next_page(browser)
         if next_page_link is None:
             break
-        browser.follow_link(next_page_link)
+        browser.follow_link('novels', next_page_link)
 
 def get_all_novel_links(browser):
     """
