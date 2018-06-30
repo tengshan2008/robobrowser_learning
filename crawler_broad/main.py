@@ -179,7 +179,7 @@ def run(url):
 def write_to_content():
     db = records.Database('sqlite:///novel_read.db')
     rows = list(db.query('select * from novel'))
-    i = 1006
+    i = 1106
     for row in rows[1106:]:
         print(i)
         print(row['title'])
