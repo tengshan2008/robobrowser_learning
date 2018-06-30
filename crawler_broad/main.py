@@ -123,7 +123,6 @@ def get_content(link, author):
     while True:
         content = get_cell_content(browser, author)
         contents.append(content)
-        print('html content is', browser.find(True))
         if is_end_page(browser):
             break
         time.sleep(random.randint(R_START, R_END))
