@@ -133,7 +133,7 @@ def get_content(link, author):
             print('link failed', next_page_link)
             break
         else:
-            print('page link', next_page_link)
+            print('page link', browser.url)
     return "\n".join(contents)
 
 
