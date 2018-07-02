@@ -1,1 +1,1 @@
-nohup python -u run.py > output4.log 2>&1 &
+nohup python -u run.py >> output4.log 2>&1 &
