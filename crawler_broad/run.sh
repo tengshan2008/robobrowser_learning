@@ -1,0 +1,1 @@
+(python -u main.py >> output2.log 2>&1 &)

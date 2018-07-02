@@ -179,8 +179,8 @@ def run(url):
 def write_to_content():
     db = records.Database('sqlite:///novel_read.db')
     rows = list(db.query('select * from novel'))
-    i = 1106
-    for row in rows[1106:]:
+    i = 1763
+    for row in rows[1763:]:
         print(i)
         print(row['title'])
         if len(row['link']) != 0 and len(row['author']) != 0:
