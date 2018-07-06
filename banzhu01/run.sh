@@ -1,0 +1,1 @@
+(python -u banzhu.py >> banzhu.log 2>&1 &)
