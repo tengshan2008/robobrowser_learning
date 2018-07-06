@@ -24,7 +24,7 @@ IDS_PATH = os.path.join(BASE_DIR, 'ids.txt')
 HOST = 'https://www.01banzhu.org'
 
 def run():
-    browser = robobrowser.RoboBrowser(timeout=60, tries=5, history=True)
+    browser = robobrowser.RoboBrowser(timeout=60, tries=5, history=True, parser="html.parser")
     ids = list()
     with open(IDS_PATH, 'r') as f:
         ids = f.readlines()
@@ -55,7 +55,7 @@ def get_novel_detail(info):
     return title, author, last_update
 
 def get_content(chapter_list):
-    browser = robobrowser.RoboBrowser(timeout=60, tries=5, history=True, parser="html5lib")
+    browser = robobrowser.RoboBrowser(timeout=60, tries=5, history=True, parser="html.parser")
     content = list()
     for chapter in chapter_list:
         chapter_name = 'chapter: ' + chapter.string
