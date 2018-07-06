@@ -50,7 +50,7 @@ def get_novel_detail(info):
 def get_content(chapter_list):
     browser = robobrowser.RoboBrowser(timeout=60, tries=5, history=True, parser="html5lib")
     content = list()
-    for chapter in chapter_list[:5]:
+    for chapter in chapter_list:
         chapter_name = 'chapter: ' + chapter.string
         content.append(chapter_name)
         chapter_link = HOST + chapter['href']
