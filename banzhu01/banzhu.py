@@ -7,8 +7,16 @@ import robobrowser
 
 from pipeline import output
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
+handler = logging.FileHandler('banzhu.log')
+handler.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+logger.addHandler(handler)
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 IDS_PATH = os.path.join(BASE_DIR, 'ids.txt')
@@ -53,7 +61,7 @@ def get_content(chapter_list):
         chapter_name = 'chapter: ' + chapter.string
         content.append(chapter_name)
         chapter_link = HOST + chapter['href']
-        logger.info('link' + chapter_link)
+        logger.info('link ' + chapter_link)
         wait()
         try:
             browser.open(chapter_link)
