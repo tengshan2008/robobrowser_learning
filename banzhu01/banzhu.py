@@ -7,9 +7,8 @@ import robobrowser
 
 from pipeline import output
 
-# logger = logging.getLogger()
-# logger.setLevel(logging.INFO)
-# rq = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time))
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 IDS_PATH = os.path.join(BASE_DIR, 'ids.txt')
@@ -23,12 +22,12 @@ def run():
         ids = f.readlines()
     for novel_id in ids:
         novel_link = HOST + novel_id
-        print('link', novel_link)
+        logger.info('link ' + novel_link)
         wait()
         try:
             browser.open(novel_link.strip())
         except:
-            print('fail novel link', novel_link)
+            logger.info('fail novel link' + novel_link)
             continue
         else:
             get_novel(browser, novel_id)
@@ -54,12 +53,12 @@ def get_content(chapter_list):
         chapter_name = 'chapter: ' + chapter.string
         content.append(chapter_name)
         chapter_link = HOST + chapter['href']
-        print('link', chapter_link)
+        logger.info('link' + chapter_link)
         wait()
         try:
             browser.open(chapter_link)
         except:
-            print('fail chapter link')
+            logger.info('fail chapter link')
             continue
         else:
             chapter_content = get_chapter_content(browser)
