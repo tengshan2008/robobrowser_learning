@@ -24,7 +24,7 @@ IDS_PATH = os.path.join(BASE_DIR, 'ids.txt')
 HOST = 'https://www.01banzhu.org'
 
 def run():
-    browser = robobrowser.RoboBrowser(timeout=60, tries=5, history=True, parser="html5lib")
+    browser = robobrowser.RoboBrowser(timeout=60, tries=5, history=True)
     ids = list()
     with open(IDS_PATH, 'r') as f:
         ids = f.readlines()
