@@ -83,7 +83,7 @@ def to_sql(novel):
 
 
 def to_api(novel):
-    browser = robobrowser.RoboBrowser(history=True, parser="html5lib", timeout=60, tries=5)
+    browser = robobrowser.RoboBrowser(history=True, parser="html.parser", timeout=60, tries=5)
     url = 'http://apanr.net/'
     # open anyview a panel
     browser.open(url)
