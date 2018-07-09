@@ -94,7 +94,11 @@ def to_api(novel):
     browser.submit_form(login_form)
     # access account
     open_account = browser.find(href='/account')
-    browser.follow_link(open_account)
+    try:
+        browser.follow_link(open_account)
+    except:
+        print('open anyview website is failed')
+        return
     # upload form
     upload_form = browser.get_form()
     # add upload action field
