@@ -28,7 +28,7 @@ def run():
     ids = list()
     with open(IDS_PATH, 'r') as f:
         ids = f.readlines()
-    for novel_id in ids[240:]:
+    for novel_id in ids[410:]:
         novel_link = HOST + novel_id
         logger.info('link ' + novel_link)
         wait()
