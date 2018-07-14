@@ -28,7 +28,7 @@ def run():
     ids = list()
     with open(IDS_PATH, 'r') as f:
         ids = f.readlines()
-    for novel_id in ids[800:]:
+    for novel_id in ids:
         novel_link = HOST + novel_id
         logger.info('link ' + novel_link)
         wait()
@@ -74,7 +74,10 @@ def get_content(chapter_list):
     return '\n'.join(content)
 
 def get_chapter_content(browser):
-    return [line.strip('\n') for line in browser.find(id='content').strings]
+    content = browser.find(id='content')
+    if content is None:
+        return []
+    return [line.strip('\n') for line in content.strings]
 
 def wait():
     seconds = random.randint(5, 10)

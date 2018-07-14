@@ -13,12 +13,12 @@ CREATE_TABLE = '''
         title text,
         author text,
         last_update text,
-        content text
+        content_lenght integer
     )
 '''
 
 def read(cursor, param):
-    query = 'select content from novel where novel_id = ?'
+    query = 'select content_lenght from novel where novel_id = ?'
     cursor.execute(query, param)
     records = cursor.fetchall()
     return records
@@ -26,7 +26,7 @@ def read(cursor, param):
 def insert(cursor, param):
     query = '''
         insert into novel
-        (novel_id, title, author, content, last_update)
+        (novel_id, title, author, content_lenght, last_update)
         values
         (?, ?, ?, ?, ?)
     '''
@@ -34,7 +34,7 @@ def insert(cursor, param):
     
 
 def update(cursor, param):
-    query = 'update novel set content = ? where novel_id = ?'
+    query = 'update novel set content_lenght = ? where novel_id = ?'
     cursor.execute(query, param)
     print('have new novel content, update it')
 
@@ -50,22 +50,37 @@ def output(title, novel_id='0_0', author='unkown', last_update='unkown', content
     if match:
         to_api(novel)
 
+def write_novel_file(path, novel):
+    with open(path, 'w', encoding='utf-8') as f:
+        f.writelines([
+            "标题：" + novel['title'] + "\n",
+            "作者：" + novel['author'] + "\n",
+            "日期：" + novel['last_update'] + "\n",
+            novel['content'] + "\n"
+        ])
+
 def to_sql(novel):
     title = novel['title'].replace("'", "''")
     author = novel['author'].replace("'", "''")
     novel_id = novel['id'].replace("'", "''")
     last_update = novel['last_update'].replace("'", "''")
     content = novel['content'].replace("'", "''")
+    path = os.path.join(BASE_DIR, novel['title'] + ".txt")
 
     conn = sqlite3.connect('banzhu.db')
     cursor = conn.cursor()
     cursor.execute(CREATE_TABLE)
     conn.commit()
-
+    
     records = read(cursor, (novel_id,))
     if len(records) != 0:
-        if len(records[0][0]) < len(content):
-            update(cursor, (content, novel_id))
+        if records[0][0] < len(content):
+            update(cursor, (len(content), novel_id))
+            write_novel_file(path, novel)
+            cursor.close()
+            conn.commit()
+            conn.close
+            return True
         else:
             print('the novel', title, 'has load in database')
             cursor.close()
@@ -73,8 +88,9 @@ def to_sql(novel):
             conn.close()
             return False
     
-    param = (novel_id, title, author, content, last_update)
+    param = (novel_id, title, author, len(content), last_update)
     insert(cursor, param)
+    write_novel_file(path, novel)
     cursor.close()
     conn.commit()
     conn.close
@@ -108,13 +124,6 @@ def to_api(novel):
     # add upload file field
     # path = BASE_DIR + title + ".txt"
     path = os.path.join(BASE_DIR, novel['title'] + ".txt")
-    with open(path, 'w', encoding='utf-8') as f:
-        f.writelines([
-            "标题：" + novel['title'] + "\n",
-            "作者：" + novel['author'] + "\n",
-            "日期：" + novel['last_update'] + "\n",
-            novel['content'] + "\n"
-        ])
     with open(path, 'r', encoding='utf-8') as f:
         upload_form['file_to_upload'].value = f
         browser.submit_form(upload_form)
